@@ -5,8 +5,8 @@ function rasterPlot(spikes)
 figure('Name', 'Raster Plot of spike trains'); %Create and name a figure
 
 trials = size(spikes, 1); %Number of spike trials
-axes('position', [0.1, 0.1, 0.8, 0.8]);
-axis([0, length(spikes) - 1, 1, trials]);
+axes('position', [0.1, 0.1, 0.8, 0.8]); %Generate the axes
+axis([0, length(spikes) - 1, 0, trials]); %Set the axis limits
 set(gca, 'YTick', 0:5:trials); %Set the y-axis numbers to integers
 ticMargin = trials*0.01; %Gap between spike trains
 ticHeight = (trials - (trials + 1)*ticMargin)/trials; %Height of the spike train box
