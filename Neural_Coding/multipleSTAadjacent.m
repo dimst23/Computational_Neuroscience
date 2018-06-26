@@ -20,8 +20,8 @@ end
 spk_avg = zeros(1, ceil(window/samp_period) + 1); % Allocate the array for STA
 
 % Some magic needed with the spikes
-conv_array = cat(2, 1, ones(1, ceil(interval/samp_period) - 1), 1);
-spk_times = find(conv(spikes, conv_array) == 2); % Find the spike occurance times
+conv_array = cat(2, 1, zeros(1, ceil(interval/samp_period) - 1), 1);
+spk_times = strfind(spikes, conv_array) + ceil(interval/samp_period); % Find the spike occurance times
 spk_times(spk_times < ceil(window/samp_period)) = []; % Remove small values
 n_spikes = length(spk_times); % Number of spikes that occurred
 
