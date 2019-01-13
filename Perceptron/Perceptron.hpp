@@ -7,7 +7,7 @@
 #include <random>
 #include <stdexcept>
 
-#define SIMPLE_ACTIVATION 0 // If set to TRUE, then the sigmoid is used as an activation function
+#define SIMPLE_ACTIVATION 0 // If set to FALSE, then the sigmoid is used as an activation function
 #define CLEAR_OUTPUT_ARRAY true // Used to clear the neuron output array
 
 class Perceptron {
