@@ -1,13 +1,11 @@
 #include "Perceptron.hpp"
 
 #if !SIMPLE_ACTIVATION
-
 Perceptron::Perceptron(double beta, double learning_rate, double acceptable_error) {
     Perceptron::beta = beta;
     Perceptron::learning_rate = learning_rate;
     Perceptron::acceptable_error = acceptable_error;
 }
-
 #endif
 
 double Perceptron::activation() {
@@ -60,7 +58,6 @@ void Perceptron::weight_init() {
 }
 
 #if !SIMPLE_ACTIVATION
-
 void Perceptron::update_weights() {
     for (std::size_t i = 0; i < input_data.size(); i++) {
         for (std::size_t j = 0; j < weights.size(); j++) {
@@ -72,7 +69,6 @@ void Perceptron::update_weights() {
         }
     }
 }
-
 #else
 void Perceptron::update_weights(double actual_value, std::size_t data_index) {
     for (std::size_t j = 0; j < weights.size(); j++) {
