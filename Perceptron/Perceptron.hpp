@@ -8,6 +8,12 @@
 #include <stdexcept>
 
 #define SIMPLE_ACTIVATION 0 // If set to FALSE, then the sigmoid is used as an activation function
+
+#if !SIMPLE_ACTIVATION
+#define UNIPOLAR_ACTIVATION 0 // Whether to use the unipolar function or not
+#define GRADIENT_DESCENT 1 // Whether or not to use gradient descent for weight update
+#endif
+
 #define CLEAR_OUTPUT_ARRAY true // Used to clear the neuron output array
 
 class Perceptron {
@@ -38,6 +44,7 @@ private:
 public:
 #if !SIMPLE_ACTIVATION
     Perceptron(double beta, double learning_rate, double acceptable_error); // Pass the required initial values
+    double training_error(); // Output the error in training
 #endif
     void train(); // Train the neuron with the provided dataset
     void classify(bool clear = false); // Classify the provided data set
