@@ -19,6 +19,7 @@
 class Perceptron {
 private:
     double sum; // Hold the weighted sum in accumulation
+    double neuron_bias; // hold the bias for the neuron
 
 #if !SIMPLE_ACTIVATION
     double beta; // Beta value used as a parameter in the sigmoid activation function
@@ -36,6 +37,7 @@ private:
     double activation(); // Activation function of the neuron
 
 #if !SIMPLE_ACTIVATION
+
     void update_weights(); // Update the weights using the provided learning rate
 #else
     void update_weights(double actual_value, std::size_t data_index); // Update the weights in a simple way
@@ -43,9 +45,12 @@ private:
 
 public:
 #if !SIMPLE_ACTIVATION
-    Perceptron(double beta, double learning_rate, double acceptable_error); // Pass the required initial values
+
+    Perceptron(double beta, double learning_rate, double acceptable_error,
+               double bias = 1.0); // Pass the required initial values
     double training_error(); // Output the error in training
 #endif
+
     void train(); // Train the neuron with the provided dataset
     void classify(bool clear = false); // Classify the provided data set
     void weight_init(); // Initialize the weights with random numbers

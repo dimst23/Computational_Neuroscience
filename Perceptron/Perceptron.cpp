@@ -2,10 +2,11 @@
 
 #if !SIMPLE_ACTIVATION
 
-Perceptron::Perceptron(double beta, double learning_rate, double acceptable_error) {
+Perceptron::Perceptron(double beta, double learning_rate, double acceptable_error, double bias) {
     Perceptron::beta = beta;
     Perceptron::learning_rate = learning_rate;
     Perceptron::acceptable_error = acceptable_error;
+    Perceptron::neuron_bias = bias;
 }
 
 #endif
@@ -73,7 +74,8 @@ void Perceptron::update_weights() {
 #if GRADIENT_DESCENT
             if (j == 0) {
                 weights.at(j) += learning_rate * beta * (tags.at(i) - neuron_output.at(i)) *
-                                 (1.0 - neuron_output.at(i) * neuron_output.at(i)); // Update the bias input weight
+                                 (1.0 - neuron_output.at(i) * neuron_output.at(i)) *
+                                 neuron_bias; // Update the bias input weight
             } else {
                 weights.at(j) += learning_rate * beta * (tags.at(i) - neuron_output.at(i)) *
                                  (1.0 - neuron_output.at(i) * neuron_output.at(i)) *
@@ -81,7 +83,7 @@ void Perceptron::update_weights() {
             }
 #else
             if (j == 0) {
-                weights.at(j) += tags.at(i) * learning_rate; // Update the bias input weight
+                weights.at(j) += tags.at(i) * learning_rate * neuron_bias; // Update the bias input weight
             } else {
                 weights.at(j) += tags.at(i) * input_data.at(i).at(j - 1) * learning_rate; // Update the rest weights
             }
@@ -94,7 +96,7 @@ void Perceptron::update_weights() {
 void Perceptron::update_weights(double actual_value, std::size_t data_index) {
     for (std::size_t j = 0; j < weights.size(); j++) {
         if (j == 0) {
-            weights.at(j) += actual_value; // Update the bias input weight
+            weights.at(j) += actual_value * neuron_bias; // Update the bias input weight
         } else {
             weights.at(j) += input_data.at(data_index).at(j - 1) * actual_value; // Update the rest weights
         }
@@ -115,6 +117,10 @@ void Perceptron::train() {
     }
 
     weight_init(); // Initialize the weights needed for classification
+
+    std::cout << "\n\nTraining session started." << std::endl;
+    std::cout << "************************************" << std::endl;
+
     classify(CLEAR_OUTPUT_ARRAY); // Classify before proceeding
 
 #if SIMPLE_ACTIVATION
@@ -132,18 +138,22 @@ void Perceptron::train() {
     while (true) {
         classify(CLEAR_OUTPUT_ARRAY); // Classify first to get the output values
         total_error = training_error(); // Get the total error for the classification
+        // std::cout << "Total error: " << total_error << std::endl; // TODO to be removed
 
         if (total_error > acceptable_error) {
             update_weights(); // Perform a weight update to train the neuron
+
             continue; // Continue the iterations
         } else {
             break; // Get out of the loop, once the error is acceptable
         }
     }
 #endif
+    std::cout << "****Training finished****";
 }
 
 #if !SIMPLE_ACTIVATION
+
 double Perceptron::training_error() {
     double total_error = 0.0;
 
@@ -154,4 +164,5 @@ double Perceptron::training_error() {
     }
     return total_error;
 }
+
 #endif
