@@ -115,13 +115,8 @@ void Perceptron::train() {
     }
 
     weight_init(); // Initialize the weights needed for classification
-    neuron_output.clear(); // Clear the output vector to be sure
+    classify(CLEAR_OUTPUT_ARRAY); // Classify before proceeding
 
-
-    std::cout << "\n\nTraining session started." << std::endl;
-    std::cout << "************************************" << std::endl;
-
-    classify(); // Classify before proceeding
 #if SIMPLE_ACTIVATION
     for (std::size_t i = 0; i < tags.size(); i++) {
         if (tags.at(i) != neuron_output.at(i)) {
@@ -137,18 +132,15 @@ void Perceptron::train() {
     while (true) {
         classify(CLEAR_OUTPUT_ARRAY); // Classify first to get the output values
         total_error = training_error(); // Get the total error for the classification
-        // std::cout << "Total error: " << total_error << std::endl; // TODO to be removed
 
         if (total_error > acceptable_error) {
             update_weights(); // Perform a weight update to train the neuron
-
             continue; // Continue the iterations
         } else {
             break; // Get out of the loop, once the error is acceptable
         }
     }
 #endif
-    std::cout << "****Training finished****";
 }
 
 #if !SIMPLE_ACTIVATION
