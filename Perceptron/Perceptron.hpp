@@ -10,16 +10,15 @@
 #define SIMPLE_ACTIVATION 0 // If set to FALSE, then the sigmoid is used as an activation function
 
 #if !SIMPLE_ACTIVATION
-#define UNIPOLAR_ACTIVATION 0 // Whether to use the unipolar function or not
+#define UNIPOLAR_ACTIVATION 1 // Whether to use the unipolar function or not
 #define GRADIENT_DESCENT 1 // Whether or not to use gradient descent for weight update
 #endif
 
-#define CLEAR_OUTPUT_ARRAY true // Used to clear the neuron output array
 
 class Perceptron {
+    //Variables sector
 private:
     double sum; // Hold the weighted sum in accumulation
-    double neuron_bias; // hold the bias for the neuron
 
 #if !SIMPLE_ACTIVATION
     double beta; // Beta value used as a parameter in the sigmoid activation function
@@ -36,23 +35,19 @@ public:
 private:
     double activation(); // Activation function of the neuron
 
+    // Function declarations
+public:
 #if !SIMPLE_ACTIVATION
 
+    Perceptron(double beta, double learning_rate, double acceptable_error); // Pass the required initial values
+    double training_error(); // Output the error in training
     void update_weights(); // Update the weights using the provided learning rate
 #else
     void update_weights(double actual_value, std::size_t data_index); // Update the weights in a simple way
 #endif
 
-public:
-#if !SIMPLE_ACTIVATION
-
-    Perceptron(double beta, double learning_rate, double acceptable_error,
-               double bias = 1.0); // Pass the required initial values
-    double training_error(); // Output the error in training
-#endif
-
     void train(); // Train the neuron with the provided dataset
-    void classify(bool clear = false); // Classify the provided data set
+    void classify(); // Classify the provided data set
     void weight_init(); // Initialize the weights with random numbers
 };
 
